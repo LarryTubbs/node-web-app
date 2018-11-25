@@ -13,8 +13,8 @@ hbs.registerHelper('screamIt', (text) => {
     return text.toUpperCase();
 });
 
+// middleware
 app.set('view engine', 'hbs');
-app.use(express.static(__dirname + '/public'));
 app.use( (req, res, next) => {
     var now = new Date().toString();
     var log = `${now}: ${req.method} ${req.url}`;
@@ -26,9 +26,13 @@ app.use( (req, res, next) => {
         };
     });
     next();
-})
+});
+// app.use( (req, res, next) => {
+//     res.render('maint.hbs');
+// });
+app.use(express.static(__dirname + '/public'));
 
-
+// routes
 app.get('/likes', (req, res) => {
     res.send({
         name: 'Larry Tubbs',
@@ -60,6 +64,7 @@ app.get('/bad', (req, res) => {
     });
 });
 
+// startup the server
 app.listen(3000, () => {
     console.log('Server is listening on port 3000');
 });
