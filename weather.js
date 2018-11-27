@@ -111,7 +111,7 @@ var calculateDirection = (wd) => {
 var getWeather = (address) => {
     return new Promise((resolve, reject) => {
         if (address === '') {
-            reject('You must provide an address.  See --help.');
+            reject('You must provide an address.');
         };
         
         var encodedAddr = encodeURIComponent(address);
