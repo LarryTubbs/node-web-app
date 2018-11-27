@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>My Website</title>
+    </head>
+    <body>
+        {{> header}}
+        <form name"weatherForm" id="weatherForm" method="POST" action="weather">
+            <input name="address" id="address"></input> <button name="submit" id="submit" type="submit">Get Forcast</button>
+        </form>
+        <div {{hideWeatherInfo}}> 
+            <p>Weather for {{weatherInfo.address}} as of {{weatherInfo.dt}}:</p>
+            <p>{{weatherInfo.currentConditions}}, {{weatherInfo.temp}} degrees (feels like {{weatherInfo.apparentTemp}} degrees)</p>
+            <p>Wind out of the {{weatherInfo.windDirection}} at {{weatherInfo.windSpeed}} mph</p>
+            <p>Chance of rain {{weatherInfo.chanceOfRain}} percent.
+            <ul>
+                {{#each weatherInfo.forcasts}}
+                <li>{{this.day}}, {{this.conditions}} {{this.lowTemp}}-{{this.highTemp}} degrees, {{this.chanceOfRain}}% chance of rain.</li>
+                {{/each}}
+            </ul>
+        </div>
+        <div {{hideErrorMessage}}>
+            <p>{{errorMessage}}</p>
+        </div>
+        {{> footer}}
+    </body>
+</html>

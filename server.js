@@ -2,12 +2,17 @@ const express = require('express');
 const hbs = require('hbs');
 const fs = require('fs');
 const moment = require('moment');
+var bodyParser = require('body-parser')
+
+const w = require('./weather');
 
 // environment setup
 const port = process.env.PORT || 3000;
 
 var app = express();
-
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 hbs.registerPartials(__dirname + '/views/partials');
 hbs.registerHelper('getCurrentYear', () => {
     return new Date().getFullYear();
@@ -57,15 +62,42 @@ app.get('/', (req, res) => {
 
 app.get('/about', (req, res) => {
     res.render('about.hbs', {
-        pageTitle: 'About Page',
+        pageTitle: 'About Page'
     });
 });
 
 app.get('/projects', (req, res) => {
     res.render('projects.hbs', {
-        pageTitle: 'Projects Page',
+        pageTitle: 'Projects Page'
     });
 });
+
+app.get('/weather', (req, res) => {
+    res.render('weather.hbs', {
+        pageTitle: 'Weather Lookup',
+        hideWeatherInfo: "HIDDEN",
+        hideErrorMessage: "HIDDEN"
+    });
+});
+
+app.post('/weather', (req, res) => {
+    var weather = w.getWeather(req.body.address).then( (weatherInfo) => {
+        res.render('weather.hbs', {
+            pageTitle: 'Weather Page',
+            weatherInfo: weatherInfo,
+            hideWeatherInfo: "",
+            hideErrorMessage: "HIDDEN"
+        });
+    }).catch((errorMessage) => {
+        res.render('weather.hbs', {
+            pageTitle: 'Projects Page',
+            errorMessage: errorMessage,
+            hideWeatherInfo: "HIDDEN",
+            hideErrorMessage: ""
+        });
+    });   
+});
+
 
 
 app.get('/bad', (req, res) => {
