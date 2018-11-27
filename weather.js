@@ -128,6 +128,7 @@ var getWeather = (address) => {
             var returnObj = {
                 address: prettyAddr,
                 dt: moment(response.data.currently.time*1000).format('M/D/YYYY h:m:ss a'),
+                lastUpdated: moment(response.data.currently.time*1000).fromNow(),
                 currentConditions: response.data.currently.summary,
                 temp: Math.round(response.data.currently.temperature),
                 apparentTemp: Math.round(response.data.currently.apparentTemperature),

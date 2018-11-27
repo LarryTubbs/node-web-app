@@ -10,13 +10,13 @@
             <input name="address" id="address"></input> <button name="submit" id="submit" type="submit">Get Forcast</button>
         </form>
         <div {{hideWeatherInfo}}> 
-            <p>Weather for {{weatherInfo.address}} as of {{weatherInfo.dt}}:</p>
+            <p>Weather for {{weatherInfo.address}}. Last updated {{weatherInfo.lastUpdated}}:</p>
             <p>{{weatherInfo.currentConditions}}, {{weatherInfo.temp}} degrees (feels like {{weatherInfo.apparentTemp}} degrees)</p>
             <p>Wind out of the {{weatherInfo.windDirection}} at {{weatherInfo.windSpeed}} mph</p>
             <p>Chance of rain {{weatherInfo.chanceOfRain}} percent.
             <ul>
                 {{#each weatherInfo.forcasts}}
-                <li>{{this.day}}, {{this.conditions}} {{this.lowTemp}}-{{this.highTemp}} degrees, {{this.chanceOfRain}}% chance of rain.</li>
+                <li>{{this.day}}, {{this.conditions}} {{this.lowTemp}}-{{this.highTemp}} degrees. {{this.chanceOfRain}}% chance of rain.</li>
                 {{/each}}
             </ul>
         </div>
