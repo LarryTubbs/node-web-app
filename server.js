@@ -28,11 +28,6 @@ app.use( (req, res, next) => {
     var log = `${now}: ${req.method} ${req.url}`;
 
     console.log(log);
-    fs.appendFile(`server-${moment().format('MM-DD-YYYY')}.log`, log + '\n', (err) => {
-        if (err) {
-            console.log(`server-${moment().format('MM-DD-YYYY')}.log`);
-        };
-    });
     next();
 });
 // app.use( (req, res, next) => {
