@@ -2,7 +2,7 @@
   "name": "web-server",
   "version": "1.0.0",
   "description": "Express web app from Complete Node.js Course on Udemy.com",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -11,15 +11,12 @@
     "type": "git",
     "url": "git+https://github.com/LarryTubbs/node-web-server.git"
   },
-  "author": "",
+  "author": "Larry Tubbs",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
-    "bootstrap": "^4.1.3",
     "express": "^4.16.4",
     "hbs": "^4.0.1",
-    "jquery": "^3.3.1",
-    "moment": "^2.22.2",
-    "popper": "^1.0.1"
+    "moment": "^2.22.2"
   }
 }
