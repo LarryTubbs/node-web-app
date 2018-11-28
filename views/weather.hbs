@@ -4,15 +4,23 @@
     <body>
         {{> header}}
         <div class="container">
-            <form name"weatherForm" id="weatherForm" method="POST" action="weather">
-                <input name="address" id="address"></input> <button name="submit" id="submit" type="submit">Get Forcast</button>
+            <form class="form-inline" name"weatherForm" id="weatherForm" method="POST" action="weather">
+                <input type="text" class="form-control mb-2 mr-sm-2" name="address" id="address" placeholder="ex. 123 Anywhere St, Anytown, PA">
+                {{#if weatherInfo}}
+                    {{weatherinfo.address}}
+                {{/if}}
+                </input>
+                <button class="btn btn-primary mb-2" name="submit" id="submit" type="submit">Get Forcast</button>
             </form>
             {{#if weatherInfo}}
             <div> 
                 <p>Weather for {{weatherInfo.address}}. Last updated {{weatherInfo.lastUpdated}}:</p>
-                <p>{{weatherInfo.currentConditions}}, {{weatherInfo.temp}} degrees (feels like {{weatherInfo.apparentTemp}} degrees)</p>
-                <p>Wind out of the {{weatherInfo.windDirection}} at {{weatherInfo.windSpeed}} mph</p>
-                <p>Chance of rain {{weatherInfo.chanceOfRain}} percent.
+                <ul>
+                    <li>{{weatherInfo.currentConditions}}, {{weatherInfo.temp}} degrees (feels like {{weatherInfo.apparentTemp}} degrees)</li>
+                    <li>Wind out of the {{weatherInfo.windDirection}} at {{weatherInfo.windSpeed}} mph</li>
+                    <li>Chance of rain {{weatherInfo.chanceOfRain}}%.</li>
+                </ul>
+                <p>Forecast:</p>
                 <ul>
                     {{#each weatherInfo.forcasts}}
                     <li>{{this.day}}, {{this.conditions}} {{this.lowTemp}}-{{this.highTemp}} degrees. {{this.chanceOfRain}}% chance of rain.</li>
