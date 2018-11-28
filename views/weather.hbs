@@ -4,14 +4,12 @@
     <body>
         {{> header}}
         <div class="container">
-            <form class="form-inline" name"weatherForm" id="weatherForm" method="POST" action="weather">
-                <label class="sr-only" for="inlineFormInputName">Address</label>
-                <input type="text" class="form-control mb-2 mr-sm-2" name="address" id="address" placeholder="ex. 123 Anywhere St, Anytown, PA">
-                {{#if weatherInfo}}
-                    {{weatherinfo.address}}
-                {{/if}}
-                </input>
-                <button class="btn btn-primary mb-2" name="submit" id="submit" type="submit">Get Forcast</button>
+            <form name"weatherForm" id="weatherForm" method="POST" action="weather">
+                <div class="form-group">
+                    <label class="sr-only" for="inlineFormInputName">Address</label>
+                    <input type="text" class="form-control mb-2 mr-sm-2" name="address" id="address" placeholder="ex. 123 Anywhere St, Anytown, PA" value="{{#if weatherInfo}}{{weatherInfo.address}}{{/if}}"></input>
+                    <button class="btn btn-primary mb-2" name="submit" id="submit" type="submit">Get Forcast</button>
+                </div>
             </form>
             {{#if weatherInfo}}
             <div> 

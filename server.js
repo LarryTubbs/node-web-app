@@ -69,26 +69,20 @@ app.get('/projects', (req, res) => {
 
 app.get('/weather', (req, res) => {
     res.render('weather.hbs', {
-        pageTitle: 'Weather Lookup',
-        hideWeatherInfo: "HIDDEN",
-        hideErrorMessage: "HIDDEN"
+        pageTitle: 'Weather Lookup'
     });
 });
 
 app.post('/weather', (req, res) => {
     var weather = w.getWeather(req.body.address).then( (weatherInfo) => {
         res.render('weather.hbs', {
-            pageTitle: 'Weather Page',
-            weatherInfo: weatherInfo,
-            hideWeatherInfo: "",
-            hideErrorMessage: "HIDDEN"
+            pageTitle: 'Weather Lookup',
+            weatherInfo: weatherInfo
         });
     }).catch((errorMessage) => {
         res.render('weather.hbs', {
-            pageTitle: 'Projects Page',
-            errorMessage: errorMessage,
-            hideWeatherInfo: "HIDDEN",
-            hideErrorMessage: ""
+            pageTitle: 'Weather Lookup',
+            errorMessage: errorMessage
         });
     });   
 });
