@@ -17,12 +17,11 @@
                 <ul>
                     <li>{{weatherInfo.currentConditions}}, {{weatherInfo.temp}} degrees (feels like {{weatherInfo.apparentTemp}} degrees)</li>
                     <li>Wind out of the {{weatherInfo.windDirection}} at {{weatherInfo.windSpeed}} mph</li>
-                    <li>Chance of rain {{weatherInfo.chanceOfRain}}%.</li>
                 </ul>
                 <p>Forecast:</p>
                 <ul>
                     {{#each weatherInfo.forcasts}}
-                    <li>{{this.day}}, {{this.conditions}} {{this.lowTemp}}-{{this.highTemp}} degrees. {{this.chanceOfRain}}% chance of rain.</li>
+                    <li>{{this.day}}, {{this.conditions}} {{this.lowTemp}}-{{this.highTemp}} degrees.{{#if this.chanceOfRain}} {{this.chanceOfRain}}% chance of {{this.precipType}}.{{/if}}</li>
                     {{/each}}
                 </ul>
             </div>

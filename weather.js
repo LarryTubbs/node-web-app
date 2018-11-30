@@ -134,7 +134,8 @@ var getWeather = (address) => {
                 apparentTemp: Math.round(response.data.currently.apparentTemperature),
                 windDirection: calculateDirection(response.data.currently.windBearing),
                 windSpeed: Math.round(response.data.currently.windSpeed),
-                chanceOfRain: Math.round(response.data.currently.precipProbability),
+                chanceOfRain: Math.round(response.data.currently.precipProbability*100),
+                precipType: response.data.currently.precipType,
                 forcasts: []
             };
             response.data.daily.data.forEach((day) => {
@@ -143,7 +144,8 @@ var getWeather = (address) => {
                      conditions: day.summary,
                      lowTemp: Math.round(day.temperatureLow),
                      highTemp: Math.round(day.temperatureHigh),
-                     chanceOfRain: Math.round(day.precipProbability)
+                     chanceOfRain: Math.round(day.precipProbability * 100),
+                     precipType: day.precipType
                  }
                  returnObj.forcasts.push(currentDate);
             });
