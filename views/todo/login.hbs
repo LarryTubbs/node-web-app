@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    {{> head}}
+    <body>
+        {{> header}}
+        <div class="container">
+            <form name"Login Form" id="todoLoginForm" method="POST" action="login">
+                <div class="form-group">
+                    {{#if errorMessage}}
+                    <div class="alert alert-danger" role="alert">
+                        {{errorMessage}}
+                    </div>
+                    {{/if}}
+                    <label class="sr-only" for="inlineFormInputName">Email Address</label>
+                    <input type="text" class="form-control mb-2 mr-sm-2" name="email" id="email" placeholder="ex. your.name@example.com"></input>
+                    <label class="sr-only" for="inlineFormInputName">Password</label>
+                    <input type="password" class="form-control mb-2 mr-sm-2" name="password" placeholder="password" id="password"></input>
+                    <button class="btn btn-primary mb-2" name="submit" id="submit" type="submit">Login</button>
+                    <p>Don't have an account?  Sign up for one for free <a href="register">here</a>.</p>
+                </div>
+            </form>
+        </div>
+        {{> footer}}
+    </body>
+</html>
