@@ -2,9 +2,67 @@
 <html>
     {{> head}}
     <body>
+        <script>
+            function enableEditMode(formId) {
+                var f = document.forms[formId];
+                for (i=0; i < f.elements.length; i++) {
+                    var e = f.elements[i];
+                    if (e.id === 'todoText') {
+                        e.classList.remove('form-control-plaintext');
+                        e.classList.add('form-control');
+                        e.removeAttribute('readonly');
+                    };
+                    if (e.id === 'edit' || e.id === 'delete') {
+                        e.classList.add('d-none');
+                    };
+                    if (e.id === 'save' || e.id === 'cancel') {
+                        e.classList.remove('d-none');
+                    };
+                };
+            };
+
+            function submitForm(formId) {
+                var f = document.forms[formId];
+                f.submit();
+            };
+
+            function deleteTodo(formId) {
+                var f = document.forms[formId];
+                f.action = "delete/"+formId;
+                f.submit();
+            };
+        </script>
         {{> header}}
         <div class="container">
             <p>{{welcomeMessage}}</p>
+            {{#if errorMessage}}
+                <div class="alert alert-danger" role="alert">
+                    {{errorMessage}}
+                </div>
+            {{/if}}
+            <!-- list all current todos -->
+            {{#each todos}}
+                <form class="form-inline" id="{{this._id}}" method="POST" action="update/{{this._id}}">
+                    <label class="sr-only" for="completed">Completed</label>
+                    <input type="checkbox" onchange="submitForm('{{this._id}}')" class="form-check-input mb-2 mr-sm-2" name="completed" id="completed" {{#if this.completed}}checked{{/if}}></input>
+                    <label class="sr-only" for="text">Todo text</label>
+                    <input type="text" readonly class="form-control-plaintext mb-2 mr-sm-2 col-8" name="todoText" id="todoText" value="{{this.text}}"></input>
+                    <button type="button" onclick="enableEditMode('{{this._id}}')" class="btn mb-2" id="edit" title="edit"><i class="fas fa-edit"></i></button>
+                    <button type="submit" class="btn mb-2 d-none" id="save" title="save"><i class="far fa-save"></i></button>
+                    <button type="button" onclick="javascript:document.location.reload()" class="btn mb-2 d-none" id="cancel" title="cancel"><i class="fas fa-ban"></i></button>
+                    <button type="button" onClick="deleteTodo('{{this._id}}')" class="btn mb-2" id="delete" title="delete"><i class="fas fa-trash-alt"></i></button>
+                </form>
+            {{else}}
+                <p>No todos found.</p>
+            {{/each}}
+            <!-- add new todo form -->
+            <form class="form-inline" id="addTodo" method="POST" action="add">
+                <label class="sr-only" for="completed">Completed</label>
+                <input type="checkbox" class="form-check-input mb-2 mr-sm-2" name="completed" id="completed"></input>
+                <label class="sr-only" for="text">Todo text</label>
+                <input type="text" class="form-control mb-2 mr-sm-2 col-8" name="todoText" id="todoText" placeholder="Todo text">
+                <button type="submit" class="btn mb-2" title="save"><i class="far fa-save"></i></button>
+            </form>
             <p><a href="logout">Logout</a></p>
         </div>
         {{> footer}}

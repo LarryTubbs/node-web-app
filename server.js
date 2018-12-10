@@ -101,28 +101,90 @@ app.get('/bad', (req, res) => {
 // add todo routes
 app.get('/todo/home', authenticate, (req, res) => {
     // call get todos and render
-    res.render('todo/home.hbs', {
-        pageTitle: "Todo App Home"
+    axios.get(API_URL+'/todos')
+    .then((response) => {
+        res.render('todo/home.hbs', {
+            pageTitle: 'Todos',
+            todos: response.data.todos
+        });
+    }).catch((e) => {
+        res.render('todo/home.hbs', {
+            pageTitle: 'Todos',
+            errorMessage: e.message
+        });
+    });
+});
+
+app.post('/todo/add', authenticate, (req, res) => {
+    var completed = false;
+    if (req.body.completed) {
+        completed = true;
+    };
+
+    axios.post(API_URL+'/todos', {
+            text: req.body.todoText,
+            completed: completed
+        })
+    .then((response) => {
+        res.redirect('/todo/home');
+    }).catch((e) => {
+        res.render('todo/home.hbs', {
+            pageTitle: 'Todos',
+            errorMessage: e.message
+        });
+    });
+});
+
+app.post('/todo/update/:id', authenticate, (req, res) => {
+    var id = req.params.id;
+    var completed = false;
+    if (req.body.completed) {
+        completed = true;
+    };
+
+    axios.patch(API_URL+'/todos/'+id, {
+            text: req.body.todoText,
+            completed: completed
+        })
+    .then((response) => {
+        res.redirect('/todo/home');
+    }).catch((e) => {
+        res.render('todo/home.hbs', {
+            pageTitle: 'Todos',
+            errorMessage: e.message
+        });
+    });
+});
+
+app.post('/todo/delete/:id', authenticate, (req, res) => {
+    var id = req.params.id;
+
+    axios.delete(API_URL+'/todos/'+id)
+    .then((response) => {
+        res.redirect('/todo/home');
+    }).catch((e) => {
+        res.render('todo/home.hbs', {
+            pageTitle: 'Todos',
+            errorMessage: e.message
+        });
     });
 });
 
 app.get('/todo/logout', authenticate, (req, res) => {
-    axios.delete(API_URL+'/users/me/token', {
-        headers: JSON.parse(`{
-            "x-auth": "${req.cookies.auth}"
-        }`)
-    }).then((response) => {
+    axios.delete(API_URL+'/users/me/token')
+    .then((response) => {
         res.clearCookie('auth');
+        axios.defaults.headers.common['x-auth'] = "";
         res.render('todo/logout.hbs', {
             pageTitle: 'You have been successfully logged out.'
         });
-        resolve();
     }).catch((e) => {
+        console.log(e.message);
+        res.clearCookie('auth');
+        axios.defaults.headers.common['x-auth'] = "";
         res.render('todo/logout.hbs', {
-            pageTitle: 'Logout',
-            errorMessage: e.message
+            pageTitle: 'You have been successfully logged out.'
         });
-        reject(e.message);
     });
 });
 
@@ -139,14 +201,13 @@ app.post('/todo/login', (req, res) => {
     }).then((response) => {
         var token = response.headers['x-auth'];
         res.cookie('auth', token, {httpOnly: true});
+        axios.defaults.headers.common['x-auth'] = token;
         res.redirect('/todo/home');
-        resolve();
     }).catch((e) => {
-        res.render('todo/register.hbs', {
+        res.render('todo/login.hbs', {
             pageTitle: 'Login',
             errorMessage: e.message
         });
-        reject(e.message);
     });
 });
 
@@ -165,14 +226,13 @@ app.post('/todo/register', (req, res) => {
         }).then((response) => {
             var token = response.headers['x-auth'];
             res.cookie('auth', token, {httpOnly: true});
+            axios.defaults.headers.common['x-auth'] = token;
             res.redirect('/todo/home');
-            resolve();
         }).catch((e) => {
             res.render('todo/register.hbs', {
                 pageTitle: 'Register',
                 errorMessage: e.message
             });
-            reject(e.message);
         });
     } else {
         res.render('todo/register.hbs', {
