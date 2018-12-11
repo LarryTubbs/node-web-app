@@ -1,8 +1,23 @@
 <!DOCTYPE html>
 <html>
     {{> head}}
-    <body>
+    <body onload="onPageLoad()">
         <script>
+            
+            function updateFilter(show) {
+                if (show) {
+                Cookies.set('SHOW_COMPLETED', show);
+                } else {
+                    Cookies.remove('SHOW_COMPLETED');
+                };
+                document.location.reload();
+            };
+
+            function onPageLoad() {
+                var e = document.getElementById('showCompleted');
+                e.checked = Cookies.get('SHOW_COMPLETED');
+            }
+
             function enableEditMode(formId) {
                 var f = document.forms[formId];
                 for (i=0; i < f.elements.length; i++) {
@@ -47,9 +62,9 @@
                     <input type="checkbox" onchange="submitForm('{{this._id}}')" class="form-check-input mb-2 mr-sm-2" name="completed" id="completed" {{#if this.completed}}checked{{/if}}></input>
                     <label class="sr-only" for="text">Todo text</label>
                     <input type="text" readonly class="form-control-plaintext mb-2 mr-sm-2 col-8" name="todoText" id="todoText" value="{{this.text}}"></input>
-                    <button type="button" onclick="enableEditMode('{{this._id}}')" class="btn mb-2" id="edit" title="edit"><i class="fas fa-edit"></i></button>
                     <button type="submit" class="btn mb-2 d-none" id="save" title="save"><i class="far fa-save"></i></button>
                     <button type="button" onclick="javascript:document.location.reload()" class="btn mb-2 d-none" id="cancel" title="cancel"><i class="fas fa-ban"></i></button>
+                    <button type="button" onclick="enableEditMode('{{this._id}}')" class="btn mb-2" id="edit" title="edit"><i class="fas fa-edit"></i></button>
                     <button type="button" onClick="deleteTodo('{{this._id}}')" class="btn mb-2" id="delete" title="delete"><i class="fas fa-trash-alt"></i></button>
                 </form>
             {{else}}
@@ -57,12 +72,18 @@
             {{/each}}
             <!-- add new todo form -->
             <form class="form-inline" id="addTodo" method="POST" action="add">
-                <label class="sr-only" for="completed">Completed</label>
-                <input type="checkbox" class="form-check-input mb-2 mr-sm-2" name="completed" id="completed"></input>
-                <label class="sr-only" for="text">Todo text</label>
-                <input type="text" class="form-control mb-2 mr-sm-2 col-8" name="todoText" id="todoText" placeholder="Todo text">
-                <button type="submit" class="btn mb-2" title="save"><i class="far fa-save"></i></button>
+                    <label class="sr-only" for="completed">Completed</label>
+                    <input type="checkbox" class="form-check-input mb-2 mr-sm-2" name="completed" id="completed"></input>
+                    <label class="sr-only" for="text">Todo text</label>
+                    <input type="text" class="form-control mb-2 mr-sm-2 col-8" name="todoText" id="todoText" placeholder="Todo text">
+                    <button type="submit" class="btn mb-2" title="save"><i class="far fa-save"></i></button>
             </form>
+            <hr></hr>
+            <form id="filterTodos" class="form-inline">
+                <input type="checkbox" class="form-check-input mb-2 mr-sm-2" name="showCompleted" id="showCompleted" onchange="updateFilter(this.checked)"></input>
+                <label for="showCompleted">Show completed?</label>
+            </form>
+            <hr></hr>
             <p><a href="logout">Logout</a></p>
         </div>
         {{> footer}}

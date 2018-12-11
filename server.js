@@ -103,9 +103,20 @@ app.get('/todo/home', authenticate, (req, res) => {
     // call get todos and render
     axios.get(API_URL+'/todos')
     .then((response) => {
+        var todos;
+        console.log(req.cookies.SHOW_COMPLETED);
+        if (!req.cookies.SHOW_COMPLETED) {
+            
+            todos = response.data.todos.filter((todo) => {
+                return todo.completed === false;
+            });
+        } else {
+            todos = response.data.todos;
+        };
+
         res.render('todo/home.hbs', {
             pageTitle: 'Todos',
-            todos: response.data.todos
+            todos: todos
         });
     }).catch((e) => {
         res.render('todo/home.hbs', {
