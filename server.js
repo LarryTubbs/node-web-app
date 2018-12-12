@@ -35,9 +35,7 @@ app.use( (req, res, next) => {
     console.log(log);
     next();
 });
-// app.use( (req, res, next) => {
-//     res.render('maint.hbs');
-// });
+
 app.use(express.static(__dirname + '/public'));
 
 // routes
@@ -104,7 +102,6 @@ app.get('/todo/home', authenticate, (req, res) => {
     axios.get(API_URL+'/todos')
     .then((response) => {
         var todos;
-        console.log(req.cookies.SHOW_COMPLETED);
         if (!req.cookies.SHOW_COMPLETED) {
             
             todos = response.data.todos.filter((todo) => {
