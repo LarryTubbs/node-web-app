@@ -1,0 +1,15 @@
+/* 
+ * Local CSS file for the todo internal app
+ */
+ .fa-save:hover {
+     color:red;
+ }
+.fa-ban:hover {
+    color:red;
+}
+.fa-edit:hover {
+    color:red;
+}
+.fa-trash-alt:hover {
+    color:red;
+}
